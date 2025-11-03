@@ -9,6 +9,7 @@ date.textContent = time();
 //event listeners
 playBtn.addEventListener("click",play);
 guessBtn.addEventListener("click",makeGuess);
+giveUp.addEventListener("click",gaveUp);
 
 function play(){
     score = 0; //score to zero for each new game
@@ -16,6 +17,7 @@ function play(){
     guessBtn.disabled = false;
     guess.disabled = false;
     //give up also enable
+    giveUp.disabled = false;
 
     for(let i=0; i<levelArr.length; i++){
         if(levelArr[i].checked){
@@ -55,6 +57,7 @@ function makeGuess(){
 function reset(){
     guessBtn.disabled = true;
     guess.disabled = true;
+    giveUp.disabled = true;
     guess.value = "";
     guess.placeholder = "";
     playBtn.disabled = false;
@@ -81,4 +84,9 @@ function time(){
     let d = new Date();
     //concatenate string with date info
     return d;
+}
+
+function gaveUp(){
+    msg.textContent = "Let's try again! Click play to start"
+    reset();
 }
