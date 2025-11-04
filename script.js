@@ -99,8 +99,34 @@ function updateScore(){
 }
 function time(){
     let d = new Date();
-    //concatenate string with date info
-    return d;
+    let month = d.getMonth();
+    switch(month){
+        case 0: month = "January"; break;
+        case 1: month = "February"; break;
+        case 2: month = "March"; break;
+        case 3: month = "April"; break;
+        case 4: month = "May"; break;
+        case 5: month = "June"; break;
+        case 6: month = "July"; break;
+        case 7: month = "August"; break;
+        case 8: month = "September"; break;
+        case 9: month = "October"; break;
+        case 10: month = "November"; break;
+        case 11: month = "December"; break;
+    }
+    let day = d.getDate();
+    let year = d.getFullYear();
+    let dow = d.getDay();
+    switch(dow){
+        case 0: dow = "Sunday"; break;
+        case 1: dow = "Monday"; break;
+        case 2: dow = "Tuesday"; break;
+        case 3: dow = "Wednesday"; break;
+        case 4: dow = "Thursday"; break;
+        case 5: dow = "Friday"; break;
+        case 6: dow = "Saturday"; break;
+    }
+    return dow + ", " + month + " " + day;
 }
 
 function gaveUp(){
