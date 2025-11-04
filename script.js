@@ -5,6 +5,7 @@ let level, answer, score;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 date.textContent = time();
+let msgName;
 
 //event listeners
 nameEntered.addEventListener("click",moveOn);
@@ -14,11 +15,13 @@ giveUp.addEventListener("click",gaveUp);
 
 function moveOn(){
     playBtn.disabled = false;
+    msgName = personName.value.charAt(0).toUpperCase() + personName.value.substring(1).toLowerCase();
 }
 
 function play(){
     score = 0; //score to zero for each new game
     playBtn.disabled = true;
+    nameEntered.disabled = true;
     guessBtn.disabled = false;
     guess.disabled = false;
     //give up also enable
@@ -30,7 +33,7 @@ function play(){
         }
         levelArr[i].disabled = true;
     }
-    msg.textContent = personName.value + ", guess a number 1-" + level;
+    msg.textContent = msgName + ", guess a number 1-" + level;
 
     answer = Math.floor(Math.random()*level)+1;
     guess.placeholder = answer;
@@ -40,32 +43,44 @@ function makeGuess(){
     
     let userGuess = parseInt(guess.value); //make it a number instead of a string
     //number needs only numbers, parseInt can take a number from something also with letters
+    let tempMsg = "";
     score ++; //a valid guess adds to the score
+
+    //hot or cold
+    if(Math.abs(userGuess-answer)<3){
+        tempMsg = "Hot"
+    } else if (Math.abs(userGuess-answer)<10){
+        tempMsg = "Warm"
+    } else if (){
+        
+    }
+
+    //answer feedback
     if(isNaN(userGuess) || userGuess<1 || userGuess>level){
-        msg.textContent = personName.value + ", enter a VALID #1-" + level;
+        msg.textContent = msgName + ", enter a VALID #1-" + level;
         return;
     } else if(userGuess>answer){
-        msg.textContent = "Too high!";
+        msg.textContent = "Too high! " + tempMsg;
     } else if(userGuess<answer){
-        msg.textContent = "Too low!";
+        msg.textContent = "Too low! " + tempMsg;
     } else if(score ==1){ 
-        msg.textContent = personName.value + ", you got it in 1 try! Press play to play again";
+        msg.textContent = msgName + ", you got it in 1 try! Press play to play again";
         updateScore();
         reset();
     } else if(score<=3){
-        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Really good! Press play to play again";
+        msg.textContent = msgName + ", you got it! It took you " + score + " tries. Really good! Press play to play again";
         updateScore();
         reset();
     } else if(score<=7){
-        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Not bad! Press play to play again";
+        msg.textContent = msgName + ", you got it! It took you " + score + " tries. Not bad! Press play to play again";
         updateScore();
         reset();
     } else if(score<=10){
-        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Doing okay-- Press play to play again";
+        msg.textContent = msgName + ", you got it! It took you " + score + " tries. Doing okay-- Press play to play again";
         updateScore();
         reset();
     } else{
-        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Could be better.. Press play to play again";
+        msg.textContent = msgName + ", you got it! It took you " + score + " tries. Could be better.. Press play to play again";
         updateScore();
         reset();
     }
@@ -101,7 +116,7 @@ function time(){
     let d = new Date();
     let month = d.getMonth();
     switch(month){
-        case 0: month = "January"; break;
+        case 0: month = "January"; break; //full month name
         case 1: month = "February"; break;
         case 2: month = "March"; break;
         case 3: month = "April"; break;
@@ -115,10 +130,19 @@ function time(){
         case 11: month = "December"; break;
     }
     let day = d.getDate();
+    if(day==1||day==21||day==31){ //adding suffixes
+        day = day + "st";
+    } else if(day==2||day==22){
+        day = day + "nd";
+    } else if(day==3||day==23){
+        day = day + "rd";
+    } else{
+        day = day + "th";
+    }
     let year = d.getFullYear();
     let dow = d.getDay();
     switch(dow){
-        case 0: dow = "Sunday"; break;
+        case 0: dow = "Sunday"; break; //full day of the week
         case 1: dow = "Monday"; break;
         case 2: dow = "Tuesday"; break;
         case 3: dow = "Wednesday"; break;
@@ -126,10 +150,10 @@ function time(){
         case 5: dow = "Friday"; break;
         case 6: dow = "Saturday"; break;
     }
-    return dow + ", " + month + " " + day;
+    return dow + ", " + month + " " + day + " "+ year;
 }
 
 function gaveUp(){
-    msg.textContent = personName.value + ", let's try again! Click play to start"
+    msg.textContent = msgName + ", let's try again! Click play to start"
     reset();
 }
