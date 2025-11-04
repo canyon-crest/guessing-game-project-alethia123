@@ -7,9 +7,14 @@ const scoreArr = [];
 date.textContent = time();
 
 //event listeners
+nameEntered.addEventListener("click",moveOn);
 playBtn.addEventListener("click",play);
 guessBtn.addEventListener("click",makeGuess);
 giveUp.addEventListener("click",gaveUp);
+
+function moveOn(){
+    playBtn.disabled = false;
+}
 
 function play(){
     score = 0; //score to zero for each new game
@@ -25,7 +30,7 @@ function play(){
         }
         levelArr[i].disabled = true;
     }
-    msg.textContent = "Guess a number 1-" + level;
+    msg.textContent = personName.value + ", guess a number 1-" + level;
 
     answer = Math.floor(Math.random()*level)+1;
     guess.placeholder = answer;
@@ -37,18 +42,30 @@ function makeGuess(){
     //number needs only numbers, parseInt can take a number from something also with letters
     score ++; //a valid guess adds to the score
     if(isNaN(userGuess) || userGuess<1 || userGuess>level){
-        msg.textContent = "enter a VALID #1-" + level;
+        msg.textContent = personName.value + ", enter a VALID #1-" + level;
         return;
     } else if(userGuess>answer){
         msg.textContent = "Too high!";
     } else if(userGuess<answer){
         msg.textContent = "Too low!";
-    } else if(score ==1){
-        msg.textContent = "You got it in 1 try! Press play to play again";
+    } else if(score ==1){ 
+        msg.textContent = personName.value + ", you got it in 1 try! Press play to play again";
+        updateScore();
+        reset();
+    } else if(score<=3){
+        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Really good! Press play to play again";
+        updateScore();
+        reset();
+    } else if(score<=7){
+        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Not bad! Press play to play again";
+        updateScore();
+        reset();
+    } else if(score<=10){
+        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Doing okay-- Press play to play again";
         updateScore();
         reset();
     } else{
-        msg.textContent = "You got it! It took you " + score + " tries. Press play to play again";
+        msg.textContent = personName.value + ", you got it! It took you " + score + " tries. Could be better.. Press play to play again";
         updateScore();
         reset();
     }
@@ -87,6 +104,6 @@ function time(){
 }
 
 function gaveUp(){
-    msg.textContent = "Let's try again! Click play to start"
+    msg.textContent = personName.value + ", let's try again! Click play to start"
     reset();
 }
