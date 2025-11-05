@@ -5,8 +5,9 @@ let level, answer, score;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 const timeArr = [];
+let msgName, timeLocal, playTimer, guessTime;
+
 date.textContent = time();
-let msgName, timeLocal, playTimer;
 
 //event listeners
 nameEntered.addEventListener("click",moveOn);
@@ -14,16 +15,16 @@ playBtn.addEventListener("click",play);
 guessBtn.addEventListener("click",makeGuess);
 giveUp.addEventListener("click",gaveUp);
 
+//after name is entered
 function moveOn(){
     playBtn.disabled = false;
     msgName = personName.value.charAt(0).toUpperCase() + personName.value.substring(1).toLowerCase();
 }
 
 setInterval(localTime, 1000);
-
-    function localTime(){
-        local.textContent = new Date().toLocaleTimeString();
-    }
+function localTime(){
+    local.textContent = new Date().toLocaleTimeString();
+}
 
 function play(){
     score = 0; //score to zero for each new game
@@ -48,10 +49,13 @@ function play(){
     let start = new Date().getTime();    
     function useTimer(){ 
         let stop = new Date().getTime();
-        timePassed.textContent = ((stop-start)/1000).toFixed(2); //save this thingamajig as a variable, push to time array, sort time array etc etc. so define global variable outside then set what it is here then make another like timesort function or somethg
+        timePassed.textContent = ((stop-start)/1000).toFixed(2); 
+        guessTime = Number(((stop-start)/1000).toFixed(2));
+        //save this thingamajig as a variable, push to time array, sort time array etc etc. so define global variable outside then set what it is here then make another like timesort function or somethg
     }
 }
 
+//when guess is clicked
 function makeGuess(){
     
     let userGuess = parseInt(guess.value); //make it a number instead of a string
@@ -101,6 +105,8 @@ function makeGuess(){
     }
   
 }
+
+//ready to click play and start again
 function reset(){
     clearInterval(playTimer);
     guessBtn.disabled = true;
@@ -113,6 +119,8 @@ function reset(){
         levelArr[i].disabled = false;
     }
 }
+
+//adding score to array, sorting, counting wins, adding to leaderboard, calc avg
 function updateScore(){
     scoreArr.push(score);
     scoreArr.sort((a,b)=>a-b); //sort in increasing order
@@ -126,8 +134,19 @@ function updateScore(){
         }
     }
     let avg = sum/scoreArr.length;
-    avgScore.textContent = "Average Score: " + avg.toFixed(2);
+    avgScore.textContent = "Average score: " + avg.toFixed(2);
+    timeArr.push(guessTime);
+    timeArr.sort((a,b)=>a-b);
+    fastestGame.textContent = "Fastest time: " + timeArr[0];
+    let add = 0;
+    for(i=0; i<timeArr.length; i++){
+        add += timeArr[i];
+    }
+    let avrg = add/timeArr.length;
+    avgTime.textContent = "Average time: " + avrg.toFixed(2);
 }
+
+//for date and time at the top
 function time(){
     let d = new Date();
     let month = d.getMonth();
@@ -170,7 +189,8 @@ function time(){
     return dow + ", " + month + " " + day + " "+ year;
 }
 
+//giveup button
 function gaveUp(){
-    msg.textContent = msgName + ", let's try again! Click play to start"
+    msg.textContent = msgName + ", let's try again! Click play to start";
     reset();
 }
