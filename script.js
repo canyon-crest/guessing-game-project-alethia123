@@ -18,6 +18,12 @@ function moveOn(){
     msgName = personName.value.charAt(0).toUpperCase() + personName.value.substring(1).toLowerCase();
 }
 
+function useTimer(){
+    let start = new Date().getTime();
+    let stop = new Date().getTime();
+    timePassed.textContent = ((start-stop)).toFixed(2);
+}
+
 function play(){
     score = 0; //score to zero for each new game
     playBtn.disabled = true;
@@ -36,7 +42,9 @@ function play(){
     msg.textContent = msgName + ", guess a number 1-" + level;
 
     answer = Math.floor(Math.random()*level)+1;
-    guess.placeholder = answer;
+    guess.placeholder = answer; //delete at end
+
+    let timer = setInterval(useTimer, 10); //STUPID TIMER ISN'T WORKING
 }
 
 function makeGuess(){
@@ -48,11 +56,13 @@ function makeGuess(){
 
     //hot or cold
     if(Math.abs(userGuess-answer)<3){
-        tempMsg = "Hot"
-    } else if (Math.abs(userGuess-answer)<10){
-        tempMsg = "Warm"
-    } else if (){
-        
+        tempMsg = "Hot";
+    } else if (Math.abs(userGuess-answer)<11){
+        tempMsg = "Warm";
+    } else if (Math.abs(userGuess-answer)<21){
+        tempMsg = "Lukewarm";
+    } else {
+        tempMsg = "Cold";
     }
 
     //answer feedback
@@ -150,7 +160,7 @@ function time(){
         case 5: dow = "Friday"; break;
         case 6: dow = "Saturday"; break;
     }
-    return dow + ", " + month + " " + day + " "+ year;
+    return dow + ", " + month + " " + day + " "+ year
 }
 
 function gaveUp(){
