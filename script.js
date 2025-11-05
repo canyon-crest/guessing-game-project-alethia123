@@ -4,8 +4,9 @@
 let level, answer, score;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
+const timeArr = [];
 date.textContent = time();
-let msgName, timeLocal;
+let msgName, timeLocal, playTimer;
 
 //event listeners
 nameEntered.addEventListener("click",moveOn);
@@ -23,12 +24,6 @@ setInterval(localTime, 1000);
     function localTime(){
         local.textContent = new Date().toLocaleTimeString();
     }
-
-// function useTimer(){
-//     let start = new Date().getTime();
-//     let stop = new Date().getTime();
-//     timePassed.textContent = ((start-stop)).toFixed(2);
-// }
 
 function play(){
     score = 0; //score to zero for each new game
@@ -49,7 +44,12 @@ function play(){
     answer = Math.floor(Math.random()*level)+1;
     guess.placeholder = answer; //delete at end
 
-    //let timer = setInterval(useTimer, 10); //STUPID TIMER ISN'T WORKING
+    playTimer = setInterval(useTimer, 10);
+    let start = new Date().getTime();    
+    function useTimer(){ 
+        let stop = new Date().getTime();
+        timePassed.textContent = ((stop-start)/1000).toFixed(2); //save this thingamajig as a variable, push to time array, sort time array etc etc. so define global variable outside then set what it is here then make another like timesort function or somethg
+    }
 }
 
 function makeGuess(){
@@ -102,6 +102,7 @@ function makeGuess(){
   
 }
 function reset(){
+    clearInterval(playTimer);
     guessBtn.disabled = true;
     guess.disabled = true;
     giveUp.disabled = true;
