@@ -5,7 +5,7 @@ let level, answer, score;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 date.textContent = time();
-let msgName;
+let msgName, timeLocal;
 
 //event listeners
 nameEntered.addEventListener("click",moveOn);
@@ -18,11 +18,17 @@ function moveOn(){
     msgName = personName.value.charAt(0).toUpperCase() + personName.value.substring(1).toLowerCase();
 }
 
-function useTimer(){
-    let start = new Date().getTime();
-    let stop = new Date().getTime();
-    timePassed.textContent = ((start-stop)).toFixed(2);
-}
+setInterval(localTime, 1000);
+
+    function localTime(){
+        local.textContent = new Date().toLocaleTimeString();
+    }
+
+// function useTimer(){
+//     let start = new Date().getTime();
+//     let stop = new Date().getTime();
+//     timePassed.textContent = ((start-stop)).toFixed(2);
+// }
 
 function play(){
     score = 0; //score to zero for each new game
@@ -30,7 +36,6 @@ function play(){
     nameEntered.disabled = true;
     guessBtn.disabled = false;
     guess.disabled = false;
-    //give up also enable
     giveUp.disabled = false;
 
     for(let i=0; i<levelArr.length; i++){
@@ -44,7 +49,7 @@ function play(){
     answer = Math.floor(Math.random()*level)+1;
     guess.placeholder = answer; //delete at end
 
-    let timer = setInterval(useTimer, 10); //STUPID TIMER ISN'T WORKING
+    //let timer = setInterval(useTimer, 10); //STUPID TIMER ISN'T WORKING
 }
 
 function makeGuess(){
@@ -160,7 +165,8 @@ function time(){
         case 5: dow = "Friday"; break;
         case 6: dow = "Saturday"; break;
     }
-    return dow + ", " + month + " " + day + " "+ year
+
+    return dow + ", " + month + " " + day + " "+ year;
 }
 
 function gaveUp(){
