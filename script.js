@@ -43,7 +43,7 @@ function play(){
     msg.textContent = msgName + ", guess a number 1-" + level;
 
     answer = Math.floor(Math.random()*level)+1;
-    guess.placeholder = answer; //delete at end
+    //guess.placeholder = answer; //delete at end
 
     playTimer = setInterval(useTimer, 10);
     let start = new Date().getTime();    
